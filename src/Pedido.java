@@ -41,9 +41,10 @@ public class Pedido {
 
     public String relatorio(){
         StringBuilder cupom = new StringBuilder();
+        
         String estado = aberto ? "aberto" : "fechado";
         
-        cupom.append( String.format("Pedido nº %d - %s (%s)\n", idPedido, data, estado));
+        cupom.append( String.format("Pedido nº %d - %s (%s) com %d pizzas\n", idPedido, data, estado, pizzas.size()));
            
         for (Pizza pizza : pizzas) {
             cupom.append(String.format("----\n%s\n", 
