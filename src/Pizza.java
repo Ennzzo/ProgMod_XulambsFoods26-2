@@ -125,7 +125,16 @@ public class Pizza {
         }
         return quantidadeIngredientes;
 	}
+
+    /**
+     * Adiciona uma borda à pízza. Se já houver uma borda, será substituida.
+     * Em caso de borda nula, será adicionada uma borda tradicional.
+     * @param borda Borda a ser adicionada
+     * @return Preco da pizza com a borda atual.
+     */
     public double adicionarBorda(EBorda borda){
+        if(borda == null)
+            borda = EBorda.TRADICIONAL;
         this.borda = borda;
         return valorFinal();
     }
