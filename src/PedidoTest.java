@@ -46,7 +46,7 @@ public class PedidoTest {
     @Test 
     public void calculaPrecoComVariasPizzas(){
         //Arrange
-        Pizza comIngredientes = new Pizzaa(2);
+        Pizza comIngredientes = new Pizza(2);
         pedido.adicionarPizza(comIngredientes);
         //Act
         double preco = pedido.precoAPagar();
