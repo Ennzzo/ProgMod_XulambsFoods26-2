@@ -2,18 +2,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class XulambsApp {
-    private List<Pizza> listaPizzas;
+    private List<Pedido> listaPedidos;
 
-    private void limparTela() {
+    void limparTela() {
         IO.print("\033[H\033[2J");
     }
 
-    private void pausa(){
+    void pausa(){
         IO.readln("Digite <ENTER> para continuar");
         limparTela();
     }
 
-    private void cabecalho(){
+    int lerNumero(String mensagem){
+        return Integer.parseInt(IO.readln(mensagem));
+    }
+
+    void config(){
+        listaPedidos = new LinkedList<>();
+
+    }
+
+    void cabecalho(){
         limparTela();
         IO.println("XULAMBS PIZZA - v0.2");
         IO.println("=====================");
@@ -21,22 +30,19 @@ public class XulambsApp {
                     Pizza.getPizzasVendidas());
     }
 
-    private int exibirMenu() {
+    int exibirMenu() {
         cabecalho();
         IO.println("1 - Abrir pedido");
         IO.println("2 - Alterar pedido");
         IO.println("3 - Relatório de um pedido");
         IO.println("4 - Encerrar pedido");
         IO.println("0 - Sair");
-        return Integer.parseInt(IO.readln("Digite sua opção: "));
+        return lerNumero("Digite sua opção: ");
     }
-
-
 
     Pizza comprarPizza(){
         cabecalho();
-        int adicionais = 
-            Integer.parseInt(IO.readln("Quantos ingredientes? "));
+        int adicionais = lerNumero("Quantos ingredientes? ");
     
         Pizza nova = new Pizza();
         nova.adicionarIngredientes(adicionais);
@@ -51,11 +57,9 @@ public class XulambsApp {
         IO.println("=====================");
     }
 
-    void mostrarPizzas(){
-        cabecalho();
-        for (Pizza pizza : listaPizzas) {
-            mostrarNota(pizza);
-        }
+    void armazenarPedido(Pedido pedido){
+        if(pedido != null)
+            listaPedidos.add(pedido);
     }
 
     void abrirPedido(){
@@ -93,9 +97,34 @@ public class XulambsApp {
             exibirRelatorio(buscado);
         }
     }
+
+    Pedido localizarPedido(){
+        cabecalho();
+        IO.println("LOCALIZAÇÃO DE PEDIDOS\n");
+        int codigo = lerNumero("Código do pedido: ");
+        Pedido localizado = null;
+        for (int i = 0; i < listaPedidos.size() && localizado == null; i++) {
+            Pedido candidato = listaPedidos.get(i);
+            if(candidato.getID() == codigo){
+                localizado = candidato;
+            }
+        }
+        return localizado;            
+    }
+
+    void exibirRelatorio(Pedido pedido){
+        cabecalho();
+        IO.println("RELATÓRIO DE PEDIDO\n");
+        String mensagem = "Pedido não encontrado";
+        if(pedido != null)
+            mensagem = pedido.relatorio();
+       
+        IO.println(mensagem);
+    }
+
     void main(){
         int opcao;
-        listaPizzas = new LinkedList<>();
+        config();
         do {
             opcao = exibirMenu();
             switch (opcao) {
@@ -108,12 +137,5 @@ public class XulambsApp {
             }   
             pausa(); 
         } while (opcao != 0);
-        
-
     }
-
-    public void acrescentarBorda(Pizza pizza){
-        pizza.adicionarBorda(EBorda.CHOCOLATE);
-    }
-    
 }
